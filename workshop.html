@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BMBKK — CV & Personal Branding Workshop</title>
+<meta name="description" content="BMBN Workshop Registration — CV & Personal Branding.">
+
+<!-- ===================================================================
+  SETUP NOTES FOR SITT
+  1. Firebase config is already filled in below (same project as before).
+  2. This form saves to a NEW Firestore collection: "cv-workshop-registrations"
+     Add this block to your Firestore Rules alongside the existing ones:
+
+     rules_version = '2';
+     service cloud.firestore {
+       match /databases/{database}/documents {
+         match /cv-workshop-registrations/{docId} {
+           allow create: if true;
+           allow read: if request.auth != null;
+           allow update, delete: if false;
+         }
+       }
+     }
+
+  3. logo.png must sit next to this file when you push to GitHub Pages.
+  4. Admin view: open this same page with #admin at the end of the link:
+     https://yoursite.github.io/repo/workshop.html#admin
+     Log in with the same email + password used for your other admin panels.
+=================================================================== -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --black:#0a0a0b;
+    --panel:#141416;
+    --panel-2:#1c1c1f;
+    --line:#2a2a2e;
+    --white:#f7f6f3;
+    --mute:#9b9a9f;
+    --gold:#f5a623;
+    --gold-deep:#c97b0e;
+    --gold-soft:rgba(245,166,35,0.12);
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1100px 480px at 15% -10%, rgba(245,166,35,0.10), transparent 60%),
+      radial-gradient(900px 420px at 100% 10%, rgba(245,166,35,0.06), transparent 55%),
+      var(--black);
+    color:var(--white);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:640px; margin:0 auto; padding:0 22px;}
+
+  header{padding:34px 0 6px; text-align:center;}
+  .logo-img{height:46px; width:auto; display:inline-block;}
+
+  .hero{padding:26px 0 8px; text-align:center;}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:12px; letter-spacing:.16em; font-weight:700;
+    color:var(--gold); text-transform:uppercase;
+    border:1px solid rgba(245,166,35,0.35);
+    background:var(--gold-soft);
+    padding:7px 14px; border-radius:999px;
+    margin-bottom:20px;
+  }
+  .eyebrow .dot{width:6px; height:6px; border-radius:50%; background:var(--gold);}
+  h1{
+    font-family:'Archivo Black', sans-serif;
+    font-weight:400;
+    font-size:clamp(28px, 7vw, 42px);
+    line-height:1.1;
+    letter-spacing:-0.01em;
+    margin:0 0 14px;
+    text-transform:uppercase;
+  }
+  h1 .accent{color:var(--gold);}
+  .tagline{
+    font-size:13px; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--mute); font-weight:600; margin:0 0 22px;
+  }
+  .lede{
+    font-size:15.5px; line-height:1.8; color:#d8d7d3;
+    max-width:520px; margin:0 auto 8px;
+  }
+
+  .form-section{padding:30px 0 60px;}
+  .section-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:22px; margin-bottom:16px;
+  }
+  .section-num{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:24px; height:24px; border-radius:50%; background:var(--gold-soft);
+    color:var(--gold); font-size:12px; font-weight:800; margin-right:8px;
+  }
+  .section-title{
+    font-size:14px; font-weight:800; text-transform:uppercase; letter-spacing:.03em;
+    color:var(--white); margin:0 0 14px; display:flex; align-items:flex-start;
+  }
+  .section-hint{
+    font-size:12.5px; color:var(--mute); margin:-8px 0 14px 32px; line-height:1.6;
+  }
+
+  .field{margin-bottom:0;}
+  .field label{
+    display:block; font-size:12.5px; font-weight:700; letter-spacing:.02em;
+    color:#c9c8c4; margin-bottom:7px;
+  }
+  .field .req{color:var(--gold);}
+  .field input, .field select, .field textarea{
+    width:100%; background:var(--panel-2); border:1px solid var(--line);
+    color:var(--white); font-family:'Inter',sans-serif; font-size:15px;
+    padding:12px 13px; border-radius:10px; outline:none;
+    transition:border-color .15s, background .15s;
+  }
+  .field input::placeholder, .field textarea::placeholder{color:#6c6c70;}
+  .field input:focus, .field select:focus, .field textarea:focus{
+    border-color:var(--gold); background:#1f1f22;
+  }
+  .field textarea{resize:vertical; min-height:80px;}
+  .field-gap{margin-top:12px;}
+
+  .submit-btn{
+    width:100%; border:none; cursor:pointer;
+    background:linear-gradient(135deg, var(--gold), var(--gold-deep));
+    color:#1a1200; font-weight:800; font-size:15px; letter-spacing:.03em;
+    padding:16px 18px; border-radius:10px; margin-top:6px;
+    transition:transform .12s ease;
+    box-shadow:0 8px 24px -8px rgba(245,166,35,0.5);
+  }
+  .submit-btn:hover{transform:translateY(-1px);}
+  .submit-btn:disabled{opacity:.6; cursor:not-allowed; transform:none;}
+
+  .form-msg{
+    margin-top:14px; font-size:13.5px; padding:12px 14px; border-radius:10px;
+    display:none; line-height:1.6;
+  }
+  .form-msg.show{display:block;}
+  .form-msg.error{background:rgba(220,60,60,0.12); border:1px solid rgba(220,60,60,0.4); color:#ff9a9a;}
+
+  .success{display:none; text-align:center; padding:50px 0 60px;}
+  .success.show{display:block;}
+  .success-badge{
+    width:64px; height:64px; margin:0 auto 20px; border-radius:50%;
+    background:var(--gold-soft); border:1px solid rgba(245,166,35,0.4);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .success h2{
+    font-family:'Archivo Black', sans-serif; font-weight:400; text-transform:uppercase;
+    font-size:22px; margin:0 0 10px;
+  }
+  .success p{color:var(--mute); font-size:14.5px; line-height:1.8; max-width:420px; margin:0 auto 22px;}
+
+  footer{
+    text-align:center; padding:26px 0 40px; color:#5c5c60; font-size:12px;
+    border-top:1px solid var(--line); margin-top:10px; letter-spacing:.02em;
+  }
+
+  /* =========================================================
+     ADMIN VIEW (only reachable via #admin)
+  ========================================================== */
+  #adminView{display:none;}
+  #adminView.show{display:block;}
+  #publicView.hide{display:none;}
+
+  #adminLoginBox{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px;}
+  .login-card{
+    width:100%; max-width:380px; background:var(--panel); border:1px solid var(--line);
+    border-radius:var(--radius); padding:32px 28px;
+  }
+  .login-logo{height:34px; display:block; margin:0 auto 22px;}
+  .login-title{
+    font-family:'Archivo Black', sans-serif; font-weight:400; text-transform:uppercase;
+    font-size:19px; text-align:center; margin:0 0 4px;
+  }
+  .login-sub{text-align:center; color:var(--mute); font-size:13px; margin:0 0 26px;}
+  .login-btn{
+    width:100%; border:none; cursor:pointer; margin-top:6px;
+    background:linear-gradient(135deg, var(--gold), var(--gold-deep));
+    color:#1a1200; font-weight:800; font-size:14.5px; padding:13px 16px; border-radius:10px;
+  }
+  .login-btn:disabled{opacity:.6; cursor:not-allowed;}
+  .login-err{
+    display:none; margin-top:14px; font-size:13px; color:#ff9a9a;
+    background:rgba(220,60,60,0.12); border:1px solid rgba(220,60,60,0.4);
+    padding:10px 12px; border-radius:10px;
+  }
+  .login-err.show{display:block;}
+
+  #adminDash{display:none;}
+  #adminDash.show{display:block;}
+  .admin-header{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 0; border-bottom:1px solid var(--line);
+  }
+  .admin-header .logo-img{height:30px;}
+  .logout-btn{
+    background:transparent; border:1px solid var(--line); color:var(--mute);
+    font-size:13px; font-weight:600; padding:8px 14px; border-radius:999px; cursor:pointer;
+  }
+  .logout-btn:hover{border-color:var(--gold); color:var(--gold);}
+
+  .stats{display:flex; gap:14px; flex-wrap:wrap; padding:24px 0 6px;}
+  .stat{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:16px 20px; min-width:130px; flex:1;
+  }
+  .stat-num{font-family:'Archivo Black', sans-serif; font-size:26px; color:var(--gold);}
+  .stat-label{font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--mute); margin-top:4px; font-weight:700;}
+
+  .toolbar{display:flex; gap:10px; align-items:center; padding:20px 0 18px; flex-wrap:wrap;}
+  .toolbar input[type="text"]{
+    flex:1; min-width:180px; background:var(--panel-2); border:1px solid var(--line); color:var(--white);
+    font-family:'Inter',sans-serif; font-size:14px; padding:10px 13px; border-radius:10px; outline:none;
+  }
+  .toolbar input[type="text"]:focus{border-color:var(--gold);}
+  .export-btn{
+    background:var(--panel-2); border:1px solid var(--line); color:var(--white);
+    font-size:13px; font-weight:700; padding:10px 16px; border-radius:10px; cursor:pointer; white-space:nowrap;
+  }
+  .export-btn:hover{border-color:var(--gold); color:var(--gold);}
+
+  .app-list{margin-bottom:50px;}
+  .app-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    margin-bottom:12px; overflow:hidden;
+  }
+  .app-summary{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:15px 18px; cursor:pointer; gap:10px;
+  }
+  .app-summary-l{min-width:0;}
+  .app-name{font-size:15px; font-weight:700; color:var(--white); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .app-sub{font-size:12.5px; color:var(--mute); margin-top:2px;}
+  .app-chevron{flex:0 0 auto; color:var(--mute); transition:transform .15s; font-size:12px;}
+  .app-card.open .app-chevron{transform:rotate(180deg);}
+  .app-detail{display:none; padding:0 18px 18px; border-top:1px solid var(--line);}
+  .app-card.open .app-detail{display:block;}
+  .detail-row{padding:12px 0; border-bottom:1px solid var(--line);}
+  .detail-row:last-child{border-bottom:none;}
+  .detail-label{font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--mute); font-weight:700; margin-bottom:4px;}
+  .detail-value{font-size:13.5px; color:var(--white); line-height:1.6; white-space:pre-wrap;}
+  .empty-row, .loading{text-align:center; color:var(--mute); padding:40px 16px;}
+</style>
+</head>
+<body>
+
+<!-- ============== PUBLIC WORKSHOP REGISTRATION FORM ============== -->
+<div class="wrap" id="publicView">
+
+  <header>
+    <img src="logo.png" alt="BMBKK — Bangkok Myanmar Business Network" class="logo-img">
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow"><span class="dot"></span>BMBN Workshop</div>
+    <h1>CV &amp; Personal<br><span class="accent">Branding</span></h1>
+    <p class="tagline">Connect · Learn · Grow Together</p>
+    <p class="lede">
+      Register for the CV &amp; Personal Branding Workshop — a hands-on session to help you
+      stand out, get noticed, and build a personal brand that works for you.
+    </p>
+  </section>
+
+  <form id="wsForm" novalidate class="form-section">
+
+    <div class="section-card">
+      <p class="section-title"><span class="section-num">1</span>Full Name <span class="req">*</span></p>
+      <div class="field">
+        <input type="text" id="fullName" required>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <p class="section-title"><span class="section-num">2</span>Age Range <span class="req">*</span></p>
+      <div class="field">
+        <select id="ageRange" required>
+          <option value="" selected disabled>Select</option>
+          <option>Under 20</option>
+          <option>20–24</option>
+          <option>25–29</option>
+          <option>30–34</option>
+          <option>35+</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <p class="section-title"><span class="section-num">3</span>Current Status <span class="req">*</span></p>
+      <div class="field">
+        <select id="status" required>
+          <option value="" selected disabled>Select</option>
+          <option>Student</option>
+          <option>Fresh Graduate</option>
+          <option>Employed</option>
+          <option>Freelancer</option>
+          <option>Business Owner</option>
+          <option>Currently Looking for a Job</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <p class="section-title"><span class="section-num">4</span>Current Job Title / Field of Study</p>
+      <div class="field">
+        <input type="text" id="jobOrStudy" placeholder="e.g. Marketing Executive, or Business Administration">
+      </div>
+    </div>
+
+    <div class="section-card">
+      <p class="section-title"><span class="section-num">5</span>Current Location <span class="req">*</span></p>
+      <div class="field">
+        <select id="location" required>
+          <option value="" selected disabled>Select</option>
+          <option>Myanmar</option>
+          <option>Thailand</option>
+          <option>Other Country</option>
+        </select>
+        <input type="text" id="locationOther" placeholder="If Other, please specify" class="field-gap">
+      </div>
+    </div>
+
+    <div class="section-card">
+      <p class="section-title"><span class="section-num">6</span>Email Address <span class="req">*</span></p>
+      <p class="section-hint">We'll use this to send the Zoom link and workshop information.</p>
+      <div class="field">
+        <input type="email" id="email" required>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <p class="section-title"><span class="section-num">7</span>Phone / Telegram / Viber Contact <span class="req">*</span></p>
+      <div class="field">
+        <input type="text" id="phone" required>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <p class="section-title"><span class="section-num">8</span>What is your main reason for joining this workshop? <span class="req">*</span></p>
+      <div class="field">
+        <select id="mainReason" required>
+          <option value="" selected disabled>Select</option>
+          <option>Better CV</option>
+          <option>Job Search</option>
+          <option>Career Change</option>
+          <option>Personal Branding</option>
+          <option>Networking</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <p class="section-title"><span class="section-num">9</span>What is your biggest challenge with your CV or personal brand right now? <span class="req">*</span></p>
+      <div class="field">
+        <textarea id="challenge" required placeholder="Short answer"></textarea>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <p class="section-title"><span class="section-num">10</span>What do you hope to gain from this workshop? <span class="req">*</span></p>
+      <div class="field">
+        <textarea id="hopeToGain" required placeholder="Short answer"></textarea>
+      </div>
+    </div>
+
+    <button type="submit" class="submit-btn" id="submitBtn">Register</button>
+    <div class="form-msg error" id="formMsg"></div>
+  </form>
+
+  <section class="success" id="successState">
+    <div class="success-badge">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+        <path d="M20 6L9 17l-5-5" stroke="#f5a623" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h2>Registered</h2>
+    <p>Thank you for registering! We'll email you the Zoom link and workshop details soon.</p>
+  </section>
+
+  <footer>BMBKK — Bangkok Myanmar Business Network</footer>
+</div>
+
+<!-- ============== ADMIN VIEW (only reachable via #admin) ============== -->
+<div id="adminView">
+
+  <div id="adminLoginBox">
+    <div class="login-card">
+      <img src="logo.png" alt="BMBKK" class="login-logo">
+      <h1 class="login-title">Admin Login</h1>
+      <p class="login-sub">Workshop Registrations</p>
+      <form id="loginForm">
+        <div class="field">
+          <label for="loginEmail">Email</label>
+          <input type="email" id="loginEmail" required autocomplete="username">
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="login-btn" id="loginBtn">Log In</button>
+        <div class="login-err" id="loginErr"></div>
+      </form>
+    </div>
+  </div>
+
+  <div id="adminDash">
+    <div class="wrap">
+      <div class="admin-header">
+        <img src="logo.png" alt="BMBKK" class="logo-img">
+        <button class="logout-btn" id="logoutBtn">Log out</button>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><div class="stat-num" id="statTotal">0</div><div class="stat-label">Total registered</div></div>
+        <div class="stat"><div class="stat-num" id="statMM">0</div><div class="stat-label">In Myanmar</div></div>
+        <div class="stat"><div class="stat-num" id="statTH">0</div><div class="stat-label">In Thailand</div></div>
+      </div>
+
+      <div class="toolbar">
+        <input type="text" id="searchBox" placeholder="Search by name or email...">
+        <button class="export-btn" id="exportBtn">Export CSV</button>
+      </div>
+
+      <div class="app-list" id="appList">
+        <div class="loading">Loading...</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Firebase (modular v10) -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+  const FIREBASE_CONFIG = {
+    apiKey: "AIzaSyAGqLZXeuoB3s770Po45gVxNZmck8b64eI",
+    authDomain: "meet-event-3c234.firebaseapp.com",
+    projectId: "meet-event-3c234",
+    storageBucket: "meet-event-3c234.firebasestorage.app",
+    messagingSenderId: "1057488937023",
+    appId: "1:1057488937023:web:489becc3a0f89a18a1588a",
+    measurementId: "G-DFGMHNDR9E"
+  };
+
+  const COLLECTION_NAME = "cv-workshop-registrations";
+
+  const app = initializeApp(FIREBASE_CONFIG);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  const publicView = document.getElementById("publicView");
+  const adminView = document.getElementById("adminView");
+
+  function isAdminRoute() { return window.location.hash === "#admin"; }
+  function renderRoute() {
+    if (isAdminRoute()) {
+      publicView.classList.add("hide");
+      adminView.classList.add("show");
+    } else {
+      publicView.classList.remove("hide");
+      adminView.classList.remove("show");
+    }
+  }
+  renderRoute();
+  window.addEventListener("hashchange", renderRoute);
+
+  // ---------------- PUBLIC: workshop registration form ----------------
+  const form = document.getElementById("wsForm");
+  const msg = document.getElementById("formMsg");
+  const btn = document.getElementById("submitBtn");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    msg.classList.remove("show");
+
+    const fullName = document.getElementById("fullName").value.trim();
+    const ageRange = document.getElementById("ageRange").value;
+    const status = document.getElementById("status").value;
+    const jobOrStudy = document.getElementById("jobOrStudy").value.trim();
+    const location = document.getElementById("location").value;
+    const locationOther = document.getElementById("locationOther").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const mainReason = document.getElementById("mainReason").value;
+    const challenge = document.getElementById("challenge").value.trim();
+    const hopeToGain = document.getElementById("hopeToGain").value.trim();
+
+    if (!fullName || !ageRange || !status || !location || !email || !phone || !mainReason || !challenge || !hopeToGain) {
+      msg.textContent = "Please fill in all required fields (marked with *).";
+      msg.classList.add("show");
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = "Submitting...";
+
+    try {
+      await addDoc(collection(db, COLLECTION_NAME), {
+        fullName, ageRange, status, jobOrStudy,
+        location: location === "Other Country" && locationOther ? `Other — ${locationOther}` : location,
+        email, phone, mainReason, challenge, hopeToGain,
+        createdAt: serverTimestamp()
+      });
+      form.style.display = "none";
+      document.getElementById("successState").classList.add("show");
+    } catch (err) {
+      console.error(err);
+      msg.textContent = "Couldn't submit — " + err.message;
+      msg.classList.add("show");
+      btn.disabled = false;
+      btn.textContent = "Register";
+    }
+  });
+
+  // ---------------- ADMIN: login + dashboard ----------------
+  const adminLoginBox = document.getElementById("adminLoginBox");
+  const adminDash = document.getElementById("adminDash");
+  const loginForm = document.getElementById("loginForm");
+  const loginErr = document.getElementById("loginErr");
+  const loginBtn = document.getElementById("loginBtn");
+  const appList = document.getElementById("appList");
+  const searchBox = document.getElementById("searchBox");
+
+  let allRows = [];
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      adminLoginBox.style.display = "none";
+      adminDash.classList.add("show");
+      loadRegistrations();
+    } else {
+      adminLoginBox.style.display = "flex";
+      adminDash.classList.remove("show");
+    }
+  });
+
+  loginForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    loginErr.classList.remove("show");
+    loginBtn.disabled = true;
+    loginBtn.textContent = "Logging in...";
+    const email = document.getElementById("loginEmail").value.trim();
+    const password = document.getElementById("password").value;
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (err) {
+      loginErr.textContent = "Incorrect email or password.";
+      loginErr.classList.add("show");
+    }
+    loginBtn.disabled = false;
+    loginBtn.textContent = "Log In";
+  });
+
+  document.getElementById("logoutBtn").addEventListener("click", () => signOut(auth));
+
+  async function loadRegistrations() {
+    appList.innerHTML = '<div class="loading">Loading...</div>';
+    try {
+      const q = query(collection(db, COLLECTION_NAME), orderBy("createdAt", "desc"));
+      const snap = await getDocs(q);
+      allRows = snap.docs.map(d => d.data());
+      renderList(allRows);
+      renderStats(allRows);
+    } catch (err) {
+      appList.innerHTML = `<div class="empty-row">Couldn't load data: ${err.message}</div>`;
+    }
+  }
+
+  function renderStats(rows) {
+    document.getElementById("statTotal").textContent = rows.length;
+    document.getElementById("statMM").textContent = rows.filter(r => r.location === "Myanmar").length;
+    document.getElementById("statTH").textContent = rows.filter(r => r.location === "Thailand").length;
+  }
+
+  function fmtDate(ts) {
+    if (!ts || !ts.seconds) return "—";
+    return new Date(ts.seconds * 1000).toLocaleString();
+  }
+
+  function escapeHtml(str) {
+    return String(str ?? "").replace(/[&<>"']/g, m => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[m]));
+  }
+
+  function renderList(rows) {
+    if (!rows.length) {
+      appList.innerHTML = '<div class="empty-row">No registrations yet.</div>';
+      return;
+    }
+    appList.innerHTML = rows.map((r) => `
+      <div class="app-card">
+        <div class="app-summary" onclick="this.parentElement.classList.toggle('open')">
+          <div class="app-summary-l">
+            <div class="app-name">${escapeHtml(r.fullName || "—")}</div>
+            <div class="app-sub">${escapeHtml(r.email || "—")} · ${escapeHtml(r.location || "—")} · ${fmtDate(r.createdAt)}</div>
+          </div>
+          <div class="app-chevron">▾</div>
+        </div>
+        <div class="app-detail">
+          <div class="detail-row"><div class="detail-label">Age Range</div><div class="detail-value">${escapeHtml(r.ageRange)}</div></div>
+          <div class="detail-row"><div class="detail-label">Current Status</div><div class="detail-value">${escapeHtml(r.status)}</div></div>
+          <div class="detail-row"><div class="detail-label">Job Title / Field of Study</div><div class="detail-value">${escapeHtml(r.jobOrStudy || "—")}</div></div>
+          <div class="detail-row"><div class="detail-label">Phone / Telegram / Viber</div><div class="detail-value">${escapeHtml(r.phone)}</div></div>
+          <div class="detail-row"><div class="detail-label">Main Reason for Joining</div><div class="detail-value">${escapeHtml(r.mainReason)}</div></div>
+          <div class="detail-row"><div class="detail-label">Biggest CV / Brand Challenge</div><div class="detail-value">${escapeHtml(r.challenge)}</div></div>
+          <div class="detail-row"><div class="detail-label">What They Hope to Gain</div><div class="detail-value">${escapeHtml(r.hopeToGain)}</div></div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  searchBox.addEventListener("input", () => {
+    const term = searchBox.value.trim().toLowerCase();
+    const filtered = allRows.filter(r =>
+      (r.fullName || "").toLowerCase().includes(term) ||
+      (r.email || "").toLowerCase().includes(term)
+    );
+    renderList(filtered);
+  });
+
+  document.getElementById("exportBtn").addEventListener("click", () => {
+    const headers = ["Full Name","Age Range","Status","Job/Study","Location","Email","Phone","Main Reason","Challenge","Hope to Gain","Submitted"];
+    const rows = allRows.map(r => [
+      r.fullName, r.ageRange, r.status, r.jobOrStudy, r.location, r.email, r.phone,
+      r.mainReason, r.challenge, r.hopeToGain, fmtDate(r.createdAt)
+    ]);
+    const csv = [headers, ...rows]
+      .map(row => row.map(v => `"${String(v ?? "").replace(/"/g,'""')}"`).join(","))
+      .join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `cv-workshop-registrations-${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+</script>
+
+</body>
+</html>
