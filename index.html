@@ -131,6 +131,23 @@
   .field textarea{resize:vertical; min-height:80px;}
   .field-gap{margin-top:12px;}
 
+  /* Button-choice groups (replace <select> dropdowns) */
+  .btn-group{
+    display:flex; flex-wrap:wrap; gap:8px;
+  }
+  .btn-option{
+    background:var(--panel-2); border:1px solid var(--line); color:var(--white);
+    font-family:'Inter',sans-serif; font-size:13.5px; font-weight:600;
+    padding:10px 15px; border-radius:999px; cursor:pointer;
+    transition:border-color .15s, background .15s, color .15s;
+    user-select:none;
+  }
+  .btn-option:hover{border-color:rgba(245,166,35,0.5);}
+  .btn-option.selected{
+    background:linear-gradient(135deg, var(--gold), var(--gold-deep));
+    border-color:var(--gold); color:#1a1200;
+  }
+
   .submit-btn{
     width:100%; border:none; cursor:pointer;
     background:linear-gradient(135deg, var(--gold), var(--gold-deep));
@@ -276,101 +293,75 @@
   <form id="wsForm" novalidate class="form-section">
 
     <div class="section-card">
-      <p class="section-title"><span class="section-num">1</span>Full Name <span class="req">*</span></p>
+      <p class="section-title"><span class="section-num">1</span>Full Name</p>
       <div class="field">
         <input type="text" id="fullName" required>
       </div>
     </div>
 
     <div class="section-card">
-      <p class="section-title"><span class="section-num">2</span>Age Range <span class="req">*</span></p>
-      <div class="field">
-        <select id="ageRange" required>
-          <option value="" selected disabled>Select</option>
-          <option>Under 20</option>
-          <option>20–24</option>
-          <option>25–29</option>
-          <option>30–34</option>
-          <option>35+</option>
-        </select>
+      <p class="section-title"><span class="section-num">2</span>Age Range</p>
+      <div class="field btn-group" id="ageRangeGroup" data-value="">
+        <div class="btn-option" data-value="Under 20">Under 20</div>
+        <div class="btn-option" data-value="20–24">20–24</div>
+        <div class="btn-option" data-value="25–29">25–29</div>
+        <div class="btn-option" data-value="30–34">30–34</div>
+        <div class="btn-option" data-value="35+">35+</div>
       </div>
     </div>
 
     <div class="section-card">
-      <p class="section-title"><span class="section-num">3</span>Current Status <span class="req">*</span></p>
-      <div class="field">
-        <select id="status" required>
-          <option value="" selected disabled>Select</option>
-          <option>Student</option>
-          <option>Fresh Graduate</option>
-          <option>Employed</option>
-          <option>Freelancer</option>
-          <option>Business Owner</option>
-          <option>Currently Looking for a Job</option>
-          <option>Other</option>
-        </select>
+      <p class="section-title"><span class="section-num">3</span>Current Status</p>
+      <div class="field btn-group" id="statusGroup" data-value="">
+        <div class="btn-option" data-value="Student">Student</div>
+        <div class="btn-option" data-value="Fresh Graduate">Fresh Graduate</div>
+        <div class="btn-option" data-value="Employed">Employed</div>
+        <div class="btn-option" data-value="Freelancer">Freelancer</div>
+        <div class="btn-option" data-value="Business Owner">Business Owner</div>
+        <div class="btn-option" data-value="Currently Looking for a Job">Currently Looking for a Job</div>
+        <div class="btn-option" data-value="Other">Other</div>
       </div>
     </div>
 
     <div class="section-card">
-      <p class="section-title"><span class="section-num">4</span>Current Job Title / Field of Study</p>
-      <div class="field">
-        <input type="text" id="jobOrStudy" placeholder="e.g. Marketing Executive, or Business Administration">
+      <p class="section-title"><span class="section-num">4</span>Current Location</p>
+      <div class="field btn-group" id="locationGroup" data-value="">
+        <div class="btn-option" data-value="Myanmar">Myanmar</div>
+        <div class="btn-option" data-value="Thailand">Thailand</div>
+        <div class="btn-option" data-value="Other Country">Other Country</div>
       </div>
+      <input type="text" id="locationOther" placeholder="If Other Country, please specify" class="field-gap" style="display:none;">
     </div>
 
     <div class="section-card">
-      <p class="section-title"><span class="section-num">5</span>Current Location <span class="req">*</span></p>
-      <div class="field">
-        <select id="location" required>
-          <option value="" selected disabled>Select</option>
-          <option>Myanmar</option>
-          <option>Thailand</option>
-          <option>Other Country</option>
-        </select>
-        <input type="text" id="locationOther" placeholder="If Other, please specify" class="field-gap">
-      </div>
-    </div>
-
-    <div class="section-card">
-      <p class="section-title"><span class="section-num">6</span>Email Address <span class="req">*</span></p>
+      <p class="section-title"><span class="section-num">5</span>Phone / Email / Telegram / Viber Contact No.</p>
       <p class="section-hint">We'll use this to send the Zoom link and workshop information.</p>
       <div class="field">
-        <input type="email" id="email" required>
+        <input type="text" id="contact" required placeholder="Phone, Email, Telegram, or Viber">
       </div>
     </div>
 
     <div class="section-card">
-      <p class="section-title"><span class="section-num">7</span>Phone / Telegram / Viber Contact <span class="req">*</span></p>
-      <div class="field">
-        <input type="text" id="phone" required>
+      <p class="section-title"><span class="section-num">6</span>What is your main reason for joining this workshop?</p>
+      <div class="field btn-group" id="mainReasonGroup" data-value="">
+        <div class="btn-option" data-value="Better CV">Better CV</div>
+        <div class="btn-option" data-value="Job Search">Job Search</div>
+        <div class="btn-option" data-value="Career Change">Career Change</div>
+        <div class="btn-option" data-value="Personal Branding">Personal Branding</div>
+        <div class="btn-option" data-value="Networking">Networking</div>
+        <div class="btn-option" data-value="Other">Other</div>
       </div>
     </div>
 
     <div class="section-card">
-      <p class="section-title"><span class="section-num">8</span>What is your main reason for joining this workshop? <span class="req">*</span></p>
-      <div class="field">
-        <select id="mainReason" required>
-          <option value="" selected disabled>Select</option>
-          <option>Better CV</option>
-          <option>Job Search</option>
-          <option>Career Change</option>
-          <option>Personal Branding</option>
-          <option>Networking</option>
-          <option>Other</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="section-card">
-      <p class="section-title"><span class="section-num">9</span>What is your biggest challenge with your CV or personal brand right now? <span class="req">*</span></p>
+      <p class="section-title"><span class="section-num">7</span>What is your biggest challenge with your CV or personal brand right now?</p>
       <div class="field">
         <textarea id="challenge" required placeholder="Short answer"></textarea>
       </div>
     </div>
 
     <div class="section-card">
-      <p class="section-title"><span class="section-num">10</span>What do you hope to gain from this workshop? <span class="req">*</span></p>
+      <p class="section-title"><span class="section-num">8</span>What do you hope to gain from this workshop?</p>
       <div class="field">
         <textarea id="hopeToGain" required placeholder="Short answer"></textarea>
       </div>
@@ -430,7 +421,7 @@
       </div>
 
       <div class="toolbar">
-        <input type="text" id="searchBox" placeholder="Search by name or email...">
+        <input type="text" id="searchBox" placeholder="Search by name or contact...">
         <button class="export-btn" id="exportBtn">Export CSV</button>
       </div>
 
@@ -480,6 +471,27 @@
   renderRoute();
   window.addEventListener("hashchange", renderRoute);
 
+  // ---------------- PUBLIC: button-choice groups ----------------
+  function wireButtonGroup(groupId) {
+    const group = document.getElementById(groupId);
+    group.addEventListener("click", (e) => {
+      const opt = e.target.closest(".btn-option");
+      if (!opt) return;
+      group.querySelectorAll(".btn-option").forEach(o => o.classList.remove("selected"));
+      opt.classList.add("selected");
+      group.dataset.value = opt.dataset.value;
+    });
+  }
+  ["ageRangeGroup", "statusGroup", "locationGroup", "mainReasonGroup"].forEach(wireButtonGroup);
+
+  const locationOtherInput = document.getElementById("locationOther");
+  document.getElementById("locationGroup").addEventListener("click", (e) => {
+    const opt = e.target.closest(".btn-option");
+    if (!opt) return;
+    locationOtherInput.style.display = opt.dataset.value === "Other Country" ? "block" : "none";
+    if (opt.dataset.value !== "Other Country") locationOtherInput.value = "";
+  });
+
   // ---------------- PUBLIC: workshop registration form ----------------
   const form = document.getElementById("wsForm");
   const msg = document.getElementById("formMsg");
@@ -490,18 +502,16 @@
     msg.classList.remove("show");
 
     const fullName = document.getElementById("fullName").value.trim();
-    const ageRange = document.getElementById("ageRange").value;
-    const status = document.getElementById("status").value;
-    const jobOrStudy = document.getElementById("jobOrStudy").value.trim();
-    const location = document.getElementById("location").value;
+    const ageRange = document.getElementById("ageRangeGroup").dataset.value;
+    const status = document.getElementById("statusGroup").dataset.value;
+    const location = document.getElementById("locationGroup").dataset.value;
     const locationOther = document.getElementById("locationOther").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const mainReason = document.getElementById("mainReason").value;
+    const contact = document.getElementById("contact").value.trim();
+    const mainReason = document.getElementById("mainReasonGroup").dataset.value;
     const challenge = document.getElementById("challenge").value.trim();
     const hopeToGain = document.getElementById("hopeToGain").value.trim();
 
-    if (!fullName || !ageRange || !status || !location || !email || !phone || !mainReason || !challenge || !hopeToGain) {
+    if (!fullName || !ageRange || !status || !location || !contact || !mainReason || !challenge || !hopeToGain) {
       msg.textContent = "Please fill in all required fields (marked with *).";
       msg.classList.add("show");
       return;
@@ -512,9 +522,9 @@
 
     try {
       await addDoc(collection(db, COLLECTION_NAME), {
-        fullName, ageRange, status, jobOrStudy,
+        fullName, ageRange, status,
         location: location === "Other Country" && locationOther ? `Other — ${locationOther}` : location,
-        email, phone, mainReason, challenge, hopeToGain,
+        contact, mainReason, challenge, hopeToGain,
         createdAt: serverTimestamp()
       });
       form.style.display = "none";
@@ -609,15 +619,14 @@
         <div class="app-summary" onclick="this.parentElement.classList.toggle('open')">
           <div class="app-summary-l">
             <div class="app-name">${escapeHtml(r.fullName || "—")}</div>
-            <div class="app-sub">${escapeHtml(r.email || "—")} · ${escapeHtml(r.location || "—")} · ${fmtDate(r.createdAt)}</div>
+            <div class="app-sub">${escapeHtml(r.contact || "—")} · ${escapeHtml(r.location || "—")} · ${fmtDate(r.createdAt)}</div>
           </div>
           <div class="app-chevron">▾</div>
         </div>
         <div class="app-detail">
           <div class="detail-row"><div class="detail-label">Age Range</div><div class="detail-value">${escapeHtml(r.ageRange)}</div></div>
           <div class="detail-row"><div class="detail-label">Current Status</div><div class="detail-value">${escapeHtml(r.status)}</div></div>
-          <div class="detail-row"><div class="detail-label">Job Title / Field of Study</div><div class="detail-value">${escapeHtml(r.jobOrStudy || "—")}</div></div>
-          <div class="detail-row"><div class="detail-label">Phone / Telegram / Viber</div><div class="detail-value">${escapeHtml(r.phone)}</div></div>
+          <div class="detail-row"><div class="detail-label">Phone / Email / Telegram / Viber</div><div class="detail-value">${escapeHtml(r.contact)}</div></div>
           <div class="detail-row"><div class="detail-label">Main Reason for Joining</div><div class="detail-value">${escapeHtml(r.mainReason)}</div></div>
           <div class="detail-row"><div class="detail-label">Biggest CV / Brand Challenge</div><div class="detail-value">${escapeHtml(r.challenge)}</div></div>
           <div class="detail-row"><div class="detail-label">What They Hope to Gain</div><div class="detail-value">${escapeHtml(r.hopeToGain)}</div></div>
@@ -630,15 +639,15 @@
     const term = searchBox.value.trim().toLowerCase();
     const filtered = allRows.filter(r =>
       (r.fullName || "").toLowerCase().includes(term) ||
-      (r.email || "").toLowerCase().includes(term)
+      (r.contact || "").toLowerCase().includes(term)
     );
     renderList(filtered);
   });
 
   document.getElementById("exportBtn").addEventListener("click", () => {
-    const headers = ["Full Name","Age Range","Status","Job/Study","Location","Email","Phone","Main Reason","Challenge","Hope to Gain","Submitted"];
+    const headers = ["Full Name","Age Range","Status","Location","Contact","Main Reason","Challenge","Hope to Gain","Submitted"];
     const rows = allRows.map(r => [
-      r.fullName, r.ageRange, r.status, r.jobOrStudy, r.location, r.email, r.phone,
+      r.fullName, r.ageRange, r.status, r.location, r.contact,
       r.mainReason, r.challenge, r.hopeToGain, fmtDate(r.createdAt)
     ]);
     const csv = [headers, ...rows]
